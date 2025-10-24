@@ -1,0 +1,326 @@
+
+objects:
+  - users[i].immigration_judge: ALIndividual
+  - users[i].previous: ALIndividual
+  - users[i].previous.address: ALAddress 
+  #- representative: ALIndividual
+  - users[i].dhs: ALIndividual
+  - users[i].dhs.address: ALAddress
+---
+id: change of venue
+continue button field: cov_intro
+question: |
+  Change of venue
+---
+id: immigration judge
+question: |
+  Immigration court information for ${ users[i] }
+subquestion: |
+  Enter the name of the Immigration Judge and the next hearing date.
+fields:
+  - First name: users[i].immigration_judge.name.first
+  - Middle name: users[i].immigration_judge.name.middle
+    required: False
+  - Last name: users[i].immigration_judge.name.last
+  - Next hearing date: users[i].hearing_datetime 
+    datatype: ThreePartsDate
+    alMin: ${ today().format("yyyy-MM-dd") }
+---
+id: notice to appear
+question: |
+  Notice to Appear for ${ users[i] }
+fields:
+  - When was the Notice to Appear letter dated?: users[i].notice_appear_date
+    datatype: ThreePartsDate
+    alMax: ${ today().format("yyyy-MM-dd") }
+---
+id: type of relief
+question: |
+  Relief ${ users[i] } is seeking
+fields:
+  - What form of relief will you be seeking?: users[i].type_of_relief
+    datatype: area
+    rows: 2
+    maxlength: 60
+---
+# id: attorney or representative type
+# question: |
+#   Attorney or representative 
+# subquestion: |
+#   Check the option that best describes you.
+# fields:
+#   - no label: representative.type
+#     datatype: radio 
+#     choices:
+#       - "I am an attorney eligible to practice law.": lawyer
+#       - "I am a representative accredited to appear.": accredited
+#       - "I am a law student or law graduate.": student
+#       - "I am a reputable individual.": individual
+#       - "I am an accredited foreign government official.": official
+#       - "I am a person who was authorized to practice.": practitioner
+---
+# id: attorney or representative information 
+# sets:
+#   - representative.name.first
+#   - representative.name.last
+#   - representative.name.middle
+#   - representative.name.suffix
+#   - representative.address.address
+#   - representative.address.city
+#   - representative.address.state
+#   - representative.address.zip
+# question: |
+#   Attorney or Representative contact information
+# fields: 
+#   - Name of firm/organization: representative.firm
+#   - code: |
+#       representative.name_fields()
+#   - Street address: representative.address.address
+#     address autocomplete: True
+#   - Address line 2: representative.address.unit
+#     required: False
+#   - City: representative.address.city
+#   - State: representative.address.state
+#     code: |
+#       states_list()
+#   - ZIP code: representative.address.zip
+#   - Phone number: representative.phone_number
+#     datatype: al_international_phone
+#     required: False
+#   - FAX number: representative.fax_number
+#     datatype: al_international_phone
+#     required: False
+#   - Email address: representative.email    
+#     datatype: email
+#     required: False
+# ---
+id: your previous address change
+question: |
+  ${ users[i] }'s former address
+subquestion: |
+  This is not your current/physical or mailing address.
+fields:
+  - When did you move to Illinois?: users[i].previous.date
+    datatype: ThreePartsDate
+    alMax: ${ today() }
+  - Previous street address: users[i].previous.address.address
+    address autocomplete: True
+  - Previous address was a: users[i].previous.address.address_type
+    datatype: radio
+    choices:
+      - Apartment: apt
+      - Suite: suite
+      - Floor: floor
+      - Other (including house): other
+  - Previous apartment/suite/floor number: users[i].previous.address.unit
+    required: False
+  - Previous city: users[i].previous.address.city
+  - Previous state: users[i].previous.address.state
+    code: |
+      states_list()
+  - Previous ZIP: users[i].previous.address.zip
+    required: False      
+  - Previous phone number (optional): users[i].previous.phone_number
+    datatype: al_international_phone
+    required: False
+  - Previous email address (optional): users[i].previous.email    
+    datatype: email
+    required: False
+---
+id: dhs information 
+sets:
+  - users[i].dhs.address.address
+  - users[i].dhs.address.city
+  - users[i].dhs.address.state
+  - users[i].dhs.address.zip
+question: |
+  Office of the Principal Legal Advisor (OPLA) address
+subquestion: |
+  This is for ${ users[i] }'s case.
+fields: 
+  - Street address: users[i].dhs.address.address
+    address autocomplete: True
+  - Address line 2: users[i].dhs.address.unit
+    required: False
+  - City: users[i].dhs.address.city
+  - State: users[i].dhs.address.state
+    code: |
+      states_list()
+  - ZIP code: users[i].dhs.address.zip
+  - note: |
+      Is the OPLA location in a **different city and state** than the court?:
+    show if:
+      code: |
+        change_kind == "cov_and_coa"
+  - no label: users[i].dhs.different_court_location
+    datatype: yesnoradio
+    show if:
+      code: |
+        change_kind == "cov_and_coa"
+  - Court city: users[i].dhs.court_city
+    show if:
+      code: |
+        change_kind == "cov_and_coa"
+    js show if: |
+      val("users[i].dhs.different_court_location")
+  - Court state: users[i].dhs.court_state
+    code: |
+      states_list()
+    show if:
+      code: |
+        change_kind == "cov_and_coa"
+    js show if: |
+      val("users[i].dhs.different_court_location")
+---
+id: your previous address change
+question: |
+  Will ${ users[i] }'s be mailing the Change of Address request?
+fields:
+  - no label: users[i].cert_of_service
+    datatype: yesnoradio
+---
+objects:
+  - users[i].cov_coa_instructions: ALDocument.using(title=f"{users[i]} - COV COA Instructions", filename=space_to_underscore(f"{users[i]} - COV COA Instructions"), has_addendum=False)
+---
+objects:
+  - users[i].motion_addendum: ALDocument.using(title=f"{users[i]} - Motion Addendum", filename=space_to_underscore(f"{users[i]} -  Motion Addendum"), has_addendum=False)
+---
+objects:
+  - users[i].eoir_61_cov: ALDocument.using(title="EIOR-61 Change of venue", filename="EIOR-61 Change of venue", has_addendum=False )
+---
+objects:
+  - users[i].eoir_33_coa: ALDocument.using(title="EIOR-33 Change of address", filename="EIOR-33 Change of address", has_addendum=False )
+---
+code: |
+  users[i].cov_coa_instructions.enabled = users[i].application_is_approved and change_kind != "no"
+---
+code: |
+  users[i].eoir_61_cov.enabled = users[i].application_is_approved and change_kind == "cov_and_coa" 
+---
+code: |
+  users[i].motion_addendum.enabled = users[i].application_is_approved and change_kind == "cov_and_coa"
+---
+code: |
+  users[i].eoir_33_coa.enabled = users[i].application_is_approved and change_kind != "no"
+---
+attachment:
+  variable name: users[i].cov_coa_instructions[j]
+  name: ${ users[i] } - COV COA Instructions
+  filename: ${ space_to_underscore(f"{users[i]} - COV COA Instructions") }
+  docx template file: COA_COV_checklist.docx
+  skip undefined: True
+---
+################### EIOR-61 COV ####################
+---
+attachment:
+  name: EIOR-61
+  filename: EIOR-61
+  variable name: users[i].eoir_61_cov[j]
+  skip undefined: True
+  pdf template file: eoir_61_cov.pdf
+  editable: False
+  fields:
+    - "users1_name_last": ${ users[i].name.last }
+    - "users1_name_first": ${ users[i].name.first }
+    - "users1_name_middle": ${ users[i].name.middle[:1] }
+    - "users1_mailing_address_address": ${ users[i].mailing_address.address }
+    - "users1_mailing_address_unit": ${ users[i].mailing_address.unit }
+    - "users1_mailing_address_city": ${ users[i].mailing_address.city }
+    - "users1_mailing_address_state": ${ users[i].mailing_address.state }
+    - "users1_mailing_address_zip": ${ users[i].mailing_address.zip }
+    - "users1_a_number": ${ users[i].a_number }
+    # Entry of limited appearance always Motion
+    - "type_application": False
+    - "type_brief": False
+    - "type_motion": True
+    - "type_other": False
+    # "Motion to Change Venue from [old City, State] to [new City, State]."
+    - "type_other_description": |
+        Motion to Change Venue
+    # Proceeding type always left blank
+    - "preceeding_bond": False
+    - "preceeding_other": False
+    - "proceeding_other_type": ''
+
+    # - "representative_attorney": ${ representative.type == "lawyer" }
+    # - "representative_accredited": ${ representative.type == "accredited" }
+    # - "representative_law_student": ${ representative.type == "student" }
+    # - "representative_reputable_individual": ${ representative.type == "individual" }
+    # - "representative_accredited_foreign_official": ${ representative.type == "official" }
+    # - "representative_practitioner": ${ representative.type == "practitioner" }
+    # Attorney information
+    # - "practitioner_name_first": ${ representative.name.first }
+    # - "practitioner_name_middle": ${ representative.name.middle[:1] }
+    # - "practitioner_name_last": ${ representative.name.last }
+    # - "practitioner_address_address": ${ representative.address.address }
+    # - "practitioner_address_city": ${ representative.address.city }
+    # - "practitioner_address_state": ${ representative.address.state }
+    # - "practitioner_address_zip": ${ representative.address.zip }
+    # - "practitioner_firm": ${ representative.firm }
+    # - "practitioner_fax": ${ phone_number_formatted(representative.phone_number) }
+    # - "practitioner_email": ${ representative.email }
+    # - "practitioner_phone": ${ phone_number_formatted(representative.fax_number) }
+    # Page 2
+    - "users1_full_name": ${ users[i].name_full() }
+    - "pos_date": ${ today().format('MM/dd/yyyy') }
+    - "pos_dhs_address_full": ${ users[i].dhs.address.on_one_line(bare=True) }
+
+---
+################### MOTION ####################
+attachment:
+  variable name: users[i].motion_addendum[j]
+  name: ${ users[i] } - Motion Addendum
+  filename: ${ space_to_underscore(f"{users[i]} - Motion Addendum") }
+  docx template file: COV_motion.docx
+  skip undefined: True
+---
+################### EIOR-33 COA ####################
+---
+attachment:
+  name: EIOR-33
+  filename: EIOR-33
+  variable name: users[i].eoir_33_coa[j]
+  skip undefined: True
+  pdf template file: eoir-33_coa.pdf
+  editable: False
+  fields:
+
+    - "users1_name": ${ users[i].name_full() }
+    - "users1_a_number": ${ users[i].a_number }
+    - "care_name_current": ''
+    - "care_name_former": ''
+    - "users1_address_line1_former": ${ users[i].previous.address.line_one(bare=True) }
+    - "users1_address_line1_current": ${ users[i].mailing_address.line_one(bare=True) }
+    - "users1_address_line2_former": ${ users[i].previous.address.line_two() }
+    - "users1_address_line2_current": ${ users[i].mailing_address.line_two() }
+    - "users1_phone_former": ${ phone_number_formatted(users[i].previous.phone_number) }
+    - "users1_phone_current": ${ phone_number_formatted(users[i].phone_number) }
+    - "users1_email_former": ${ users[i].previous.email }
+    - "users1_email_current": ${ users[i].email }
+
+    # Proof of service
+    - "pos_name": ${ users[i].name_full() }
+    - "pos_date": ${ today().format('MM/dd/yyyy') }
+    - "dhs_address_line1": ${ users[i].dhs.address.line_one(bare=True) }
+    - "dhs_address_line2": ${ users[i].dhs.address.line_two() }
+    - "pos_type": by mail service
+    - "no_service": False
+
+    # Service instructions
+    - "service_name_line": |
+        % if users[i].cert_of_service:
+        ${ users[i].name_full() }
+        % endif
+    - "service_address_line_1": |
+        % if users[i].cert_of_service:
+        ${ users[i].mailing_address.line_one(bare=True) }
+        % endif
+    - "service_address_line_2":  |
+        % if users[i].cert_of_service:
+        ${ users[i].mailing_address.line_two() }
+        % endif
+    - "service_address_line_3": ''
+    - "court_address": |
+        ${ users[i].dhs.address.line_one() }
+        ${ users[i].dhs.address.line_two() }
+---
