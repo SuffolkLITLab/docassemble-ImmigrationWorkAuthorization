@@ -100,7 +100,7 @@ question: |
 subquestion: |
   This is not your current/physical or mailing address.
 fields:
-  - When did you move to Illinois?: users[i].previous.date
+  - When did you move to your current state?: users[i].previous.date
     datatype: ThreePartsDate
     alMax: ${ today() }
   - Previous street address: users[i].previous.address.address

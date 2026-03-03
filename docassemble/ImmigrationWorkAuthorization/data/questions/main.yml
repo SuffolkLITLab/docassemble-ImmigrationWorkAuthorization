@@ -47,7 +47,7 @@ code: |
 ---
 code: |
   # This controls the default state in address field questions
-  AL_DEFAULT_STATE = "IL"
+  # AL_DEFAULT_STATE = "IL"
 ---
 code: |
   github_repo_name =  'docassemble-USCISApplications'
@@ -65,8 +65,8 @@ features:
   progress bar multiplier: 0.01
 ---
 code: |
-  nav.set_sections(default_sections)
-  set_initial_sections = True
+ # nav.set_sections(default_sections)
+ # set_initial_sections = True
 ---
 code: |
   nav.set_sections(screener_sections)
@@ -77,7 +77,6 @@ id: interview_order_main
 mandatory: True
 code: |
   new_start
-  region
   if comp_screener:
     set_screener_sections
     screener_intro
@@ -137,7 +136,7 @@ code: |
     forms_assembling
     get_docs_screen
   else:
-    set_initial_sections
+  #  set_initial_sections
     intro_main
     if interpreter_present:
       interpreter.name.first
@@ -381,7 +380,7 @@ fields:
   - State: interpreter.address.state
     code: |
       states_list()
-    default: IL  
+  #  default: IL  
     show if: interpreter_present
   - Zip code: interpreter.address.zip
     show if: interpreter_present
@@ -410,18 +409,6 @@ question: |
   Make USCIS forms
 subquestion: |
   The next screens will guide you through the process of making USCIS forms for an individual or family group.
----
-id: workshop region
-question: |
-  Which region is this workshop?
-fields: 
-  - Region: region
-    datatype: radio
-    choices:
-      - Chicago
-      - Northern Illinois
-      - Western Suburbs
-      - Central & Downstate Illinois
 ---
 id: signpost for screener or USCIS application
 questioN: |
@@ -493,18 +480,19 @@ fields:
     datatype: yesnoradio
 ---
 code: |
-  default_choices = []
-  default_choices.clear()
-  workshop.address = ALAddress()
-  workshop.address.address = "1545 W. 18th St"
-  workshop.address.unit = ""
-  workshop.address.city = "Chicago"
-  workshop.address.state = "IL"
-  workshop.address.zip = "60608"
-  default_choices.append(workshop.address)
+## Set this to the location of the workshop or office you are working out of, then find all sections of code that include defaults and remove the #
+  #default_choices = []
+  #default_choices.clear()
+  #workshop.address = ALAddress()
+  #workshop.address.address = "1545 W. 18th St"
+  #workshop.address.unit = ""
+  #workshop.address.city = "Chicago"
+  #workshop.address.state = "IL"
+  #workshop.address.zip = "60608"
+  #default_choices.append(workshop.address)
 ---
-reconsider:
-  - default_choices
+# reconsider:
+ # - default_choices
 id: preparer address
 sets:
   - preparer.address.address
@@ -515,18 +503,19 @@ fields:
   - Preparer's address: preparer.address
     datatype: object_radio
     choices:
-      - default_choices
-    object labeler: |
-      lambda y: y.on_one_line()
-    none of the above: |
-      Somewhere else
-    disable others:
+  # If you have set the default_choices or set_initial_sections above to your location, remove all # from this block of code to allow for your address to be added in by default
+  #     - default_choices
+  #  object labeler: |
+  #    lambda y: y.on_one_line()
+  #  none of the above: |
+  #    Somewhere else
+  #  disable others:
       - preparer.address.address
       - preparer.address.unit
       - preparer.address.city
       - preparer.address.state
       - preparer.address.zip
-    default: workshop.address
+  # default: workshop.address
   - Street address: preparer.address.address
     address autocomplete: True
   - Suite/Unit number: preparer.address.unit
@@ -535,7 +524,6 @@ fields:
   - State: preparer.address.state
     code: |
       states_list()
-    default: IL
   - Zip code: preparer.address.zip
 ---
 id: people
