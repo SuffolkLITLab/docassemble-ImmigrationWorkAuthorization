@@ -152,7 +152,7 @@ fields:
     show if:
       code: |
         change_kind == "cov_and_coa"
-  - no label: users[i].dhs.different_court_location
+  - "Office of the Principal Legal Advisor (OPLA) address": users[i].dhs.different_court_location
     datatype: yesnoradio
     show if:
       code: |
@@ -172,7 +172,7 @@ fields:
     js show if: |
       val("users[i].dhs.different_court_location")
 ---
-id: your previous address change
+id: "your previous address change 2"
 question: |
   Will ${ users[i] }'s be mailing the Change of Address request?
 fields:

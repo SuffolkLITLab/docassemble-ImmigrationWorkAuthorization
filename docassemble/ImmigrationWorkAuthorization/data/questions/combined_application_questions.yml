@@ -174,7 +174,7 @@ fields:
   - ${ users[0].address.zip_label }: users[0].mailing_address.zip
     required: False      
 ---
-id: your mailing address
+id: "your mailing address 2"
 question: |
   What is ${ users[i] }'s mailing address?
 fields:
@@ -669,7 +669,7 @@ id: alternate birthdates there are any
 question: |
   Have you ever used (including on any documents) a date of birth other than ${ users[i].birthdate }?
 fields: 
-  - no label: users[i].alternate_birthdates.there_are_any
+  - "Have you ever used (including on any documents) a date of birth other than ${ users[i].birthdate }?": users[i].alternate_birthdates.there_are_any
     datatype: yesnoradio
   - "Other Date of Birth Used": users[i].alternate_birthdates[0]
     datatype: BirthDate
@@ -1788,7 +1788,7 @@ fields:
       Has anything changed since the date you filed your Federal tax returns or 
       is there any difference in your circumstances from the information on 
       your petition?
-  - no label: users[i].tax_changed
+  - "Annual Household Income for ${ users[i] }": users[i].tax_changed
     datatype: yesnoradio
     help: |
        For example, your marital status, income, or number of dependents as related to documents provided.

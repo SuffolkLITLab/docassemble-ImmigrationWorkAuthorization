@@ -170,7 +170,7 @@ id: immigration legal representative
 question: |
   Do you have a lawyer helping with your immigration status?
 fields:
-  - no label: users[0].current_rep
+  - "Do you have a lawyer helping with your immigration status?": users[0].current_rep
     datatype: yesnoradio
   - note: |
       List the name and contact information, status/location of your case, etc.
@@ -215,7 +215,7 @@ id: ICE check in
 question: |
   Do you have to check in with Immigration Customs Enforcement?
 fields:
-  - no label: users[0].ice_check
+  - "Do you have to check in with Immigration Customs Enforcement?": users[0].ice_check
     datatype: yesnoradio
   - Next check-in location (city, state): users[0].ice_location
     show if: users[0].ice_check
@@ -672,7 +672,7 @@ question: |
 subquestion: |
   These would include extended family, stepparents, stepchildren, or parents of stepchildren.
 fields:
-  - no label: users[0].other_family_status
+  - "Does anyone in your family have status in the United States?": users[0].other_family_status
     datatype: yesnoradio
   - note: |
       List each family members names, relationship, and status.
@@ -688,7 +688,7 @@ question: |
 subquestion: |
   Do your spouse, children, parents, grandparents, or siblings have any pending immigration applications/petitions? 
 fields: 
-  - no label: users[0].pending_immigration
+  - "Pending immigration application/petition": users[0].pending_immigration
     datatype: yesnoradio
   - note: |
       Provide the name, relationship, type of application, filed, date application was filed, whether 
@@ -715,7 +715,7 @@ question: |
 subquestion: |
   Has anyone in your immediate family ever served in the U.S. military? 
 fields:
-  - no label: users[0].military
+  - "U.S. military service": users[0].military
     datatype: yesnoradio
   - note: |
       Provide the name, relationship, branch of service and current status (active, reserve, retired).
@@ -1082,7 +1082,7 @@ fields:
       Is one or both of your parents a national of El Salvador, Guatemala, or the former Soviet bloc countries such as Russia, 
       Latvia, Lithuania, Estonia, Albania, Bulgaria, Czechoslovakia, Hungary, Poland, Romania, Yugoslavia, or any state of the 
       former Yugoslavia?
-  - no label: users[0].nacara_parents
+  - "NACARA eligibility": users[0].nacara_parents
     datatype: yesnoradio
   - Are any of your parents or your spouse a US citizen or Legal Permanent Resident (LPR)?: users[0].nacara_parent_spouse
     datatype: yesnoradio
@@ -1230,7 +1230,7 @@ id: fear
 question: |
   Are you afraid of being hurt if you return to your native country?
 fields:
-  - no label: users[0].general_fear
+  - "Are you afraid of being hurt if you return to your native country?": users[0].general_fear
     datatype: yesnoradio 
   - "Did something happen to you (or a family member) in your home country that forced you to leave?": users[0].general_fear_flee
     datatype: yesnoradio
@@ -1246,7 +1246,7 @@ question: |
 subquestion: |
   In order to determine asylum eligbility prior to coming to the U.S. were you hurt in the past?
 fields: 
-  - no label: users[0].hurt_past
+  - "Has someone hurt you in the past?": users[0].hurt_past
     datatype: yesnoradio 
   - Who hurt you and how did they hurt you?: users[0].hurt_past_who
     datatype: area
