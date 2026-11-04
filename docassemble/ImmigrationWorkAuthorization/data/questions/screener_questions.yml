@@ -1123,8 +1123,9 @@ fields:
   - "Have you ever been convicted of a crime?": users[0].lpr_7b_yes
     datatype: yesnoradio
     required: False
-    js show if: |
-      val("users[0].criminal.there_are_any") == False
+    show if:
+      code: |
+        not users[0].criminal.there_are_any
   - "Please list all convictions below, even if you received diversion, expungement, or post-conviction relief.": users[0].lpr_7b_details
     datatype: area
     required: False
@@ -1166,8 +1167,9 @@ fields:
     datatype: yesnoradio
     required: False
     label above field: True
-    js show if: |
-      val("users[0].criminal.there_are_any") == False
+    show if:
+      code: |
+        not users[0].criminal.there_are_any
   - "Please list all convictions below, even if you received diversion, expungement, or post-conviction relief.": users[0].nonlpr_8b_details
     datatype: area
     required: False

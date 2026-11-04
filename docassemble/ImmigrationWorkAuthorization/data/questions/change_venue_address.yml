@@ -152,7 +152,7 @@ fields:
     show if:
       code: |
         change_kind == "cov_and_coa"
-  - "Office of the Principal Legal Advisor (OPLA) address": users[i].dhs.different_court_location
+  - "Is the OPLA location in a different city and state than the court?": users[i].dhs.different_court_location
     datatype: yesnoradio
     show if:
       code: |

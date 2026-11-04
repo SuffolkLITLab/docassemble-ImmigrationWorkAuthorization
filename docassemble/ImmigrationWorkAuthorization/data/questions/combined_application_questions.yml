@@ -1788,7 +1788,7 @@ fields:
       Has anything changed since the date you filed your Federal tax returns or 
       is there any difference in your circumstances from the information on 
       your petition?
-  - "Annual Household Income for ${ users[i] }": users[i].tax_changed
+  - "Have your circumstances changed since your last Federal tax filing, or do they differ from your petition?": users[i].tax_changed
     datatype: yesnoradio
     help: |
        For example, your marital status, income, or number of dependents as related to documents provided.
